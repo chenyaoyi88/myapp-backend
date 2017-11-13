@@ -32,7 +32,7 @@
 					method: "POST",
 				  headers: {
 				    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-				    // "token": sessionStorage.getItem('token') || '1234'
+				    "token": sessionStorage.getItem('token') || '1234'
 				  },
 				  body: json2url(oParams).substring(1)
 				})
