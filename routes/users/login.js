@@ -65,12 +65,12 @@ router.post('/', function (req, res, next) {
           // 返回给前端
           res.send(status.success(null, { token: token }));
         } else {
-          res.send(status.showMsg(loginStatus.userPasswordError));
+          res.send(loginStatus.userPasswordError);
         }
       });
     } else {
       // 用户不存在
-      res.send(status.showMsg(loginStatus.userNotExist));
+      res.send(loginStatus.userNotExist);
     }
   })
   .catch((err) => {
