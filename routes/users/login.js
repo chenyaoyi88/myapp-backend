@@ -60,7 +60,7 @@ router.post('/', function (req, res, next) {
             username: data[0].username
           }, config.secret, {
             // 过期时间 30 秒 
-            expiresIn: 30
+            expiresIn: 10
           });
           // 返回给前端
           res.send(status.success(null, { token: token }));
