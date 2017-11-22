@@ -59,8 +59,8 @@ router.post('/', function (req, res, next) {
           const token = jwt.sign({
             username: data[0].username
           }, config.secret, {
-            // 过期时间 30 秒 
-            expiresIn: 30
+            // 过期时间，单位秒 
+            expiresIn: 3600
           });
           // 返回给前端
           res.send(status.success(null, { token: token }));

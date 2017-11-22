@@ -23,8 +23,12 @@ const config = require('./config');
 // const sessionConfig = require('./config/session');
 
 const index = require('./routes/index');
+// 用户注册、登录、退出 
 const register = require('./routes/users/register');
 const login = require('./routes/users/login');
+// 文章添加、修改、删除、查询
+const articalUpload = require('./routes/articals/upload');
+// check
 const check = require('./routes/check');
 
 const app = express();
@@ -102,6 +106,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users/register', register);
 app.use('/users/login', login);
+app.use('/articals/upload', articalUpload);
 app.use('/check', check);
 
 // catch 404 and forward to error handler

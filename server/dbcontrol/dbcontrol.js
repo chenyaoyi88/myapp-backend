@@ -2,36 +2,36 @@ const dbControl = {
   insert: function (Model) {
     return Model.save(function (err, res) {
       if (err) {
-        console.log("save Error:" + err);
+        console.log("保存数据失败:" + err);
       } else {
-        console.log("save Res:" + res);
+        console.log("保存数据成功:" + res);
       }
     });
   },
   remove: function (Model, conditions) {
     return Model.remove(conditions, function (err, res) {
       if (err) {
-        console.log("remove Error:" + err);
+        console.log("删除数据失败:" + err);
       } else {
-        console.log("remove Res:" + res);
+        console.log("删除数据成功:" + res);
       }
     })
   },
   removeById: function (Model, id) {
     return Model.findByIdAndRemove(id, function (err, res) {
       if (err) {
-        console.log("removeById Error:" + err);
+        console.log("根据ID删除数据失败:" + err);
       } else {
-        console.log("removeById Res:" + res);
+        console.log("根据ID删除数据成功:" + res);
       }
     });
   },
   removeByConditions: function (Model, conditions) {
     return Model.findByIdAndRemove(conditions, function (err, res) {
       if (err) {
-        console.log("removeByConditions Error:" + err);
+        console.log("根据条件删除数据失败:" + err);
       } else {
-        console.log("removeByConditions Res:" + res);
+        console.log("根据条件删除数据成功:" + res);
       }
     });
   },
@@ -50,10 +50,10 @@ const dbControl = {
 
     let promise = Model.find(conditions, options || {}, function (err, res) {
       if (err) {
-        console.log("find Error:" + err);
+        console.log("查找数据失败:" + err);
       } else {
-        console.log('conditions：' + JSON.stringify(conditions));
-        console.log("find Res:" + res);
+        // console.log('conditions：' + JSON.stringify(conditions));
+        console.log("查找数据成功:" + res);
         // objectIsEmpty(res) ? null : res;
       }
     });
@@ -65,36 +65,36 @@ const dbControl = {
   findById: function (Model, id) {
     return Model.findById(id, function (err, res) {
       if (err) {
-        console.log("findById Error:" + err);
+        console.log("根据ID查找数据失败:" + err);
       } else {
-        console.log("findById Res:" + res);
+        console.log("根据ID查找数据成功:" + res);
       }
     });
   },
   getCountByConditions: function (Model, conditions) {
     return Model.count(conditions, function (err, res) {
       if (err) {
-        console.log("getCountByConditions Error:" + err);
+        console.log("根据条件查找数据记录个数失败:" + err);
       } else {
-        console.log("getCountByConditions Res:" + res);
+        console.log("根据条件查找数据记录个数成功:" + res);
       }
     });
   },
   update: function (Model, conditions, updateConditions) {
     return Model.update(conditions, updateConditions, function (err, res) {
       if (err) {
-        console.log("update Error:" + err);
+        console.log("更新数据失败:" + err);
       } else {
-        console.log("update Res:" + res);
+        console.log("更新数据成功:" + res);
       }
     });
   },
   updateById: function (Model, id, updateConditions) {
     return Model.findByIdAndUpdate(id, updateConditions, function (err, res) {
       if (err) {
-        console.log("updateById Error:" + err);
+        console.log("根据ID更新数据失败:" + err);
       } else {
-        console.log("updateById Res:" + res);
+        console.log("根据ID更新数据成功:" + res);
       }
     });
   }
