@@ -21,9 +21,9 @@ router.post('/', function (req, res, next) {
      */
 
     jwt.verify(token, config.secret, function (err, decoded) {
-      console.log('***********'.green);
-      console.log(decoded.username);
-      console.log('***********'.green);
+      // console.log('***********'.green);
+      // console.log(decoded.username);
+      // console.log('***********'.green);
       if (err) {
         // 时间失效、伪造 => 超时（需要重新登录）
         res.send(status.timeout());

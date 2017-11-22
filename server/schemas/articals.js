@@ -30,7 +30,6 @@ const ArticalSchema = new Schema({
     // 文章内容
     content: {
         type: String,
-        require: true,
         default: '当前内容为空'
     },
     // 访问量
@@ -41,12 +40,12 @@ const ArticalSchema = new Schema({
     // 创建/更新时间+
     time: {
         createAt: {
-            type: Date,
-            default: Date.now()
+            type: String,
+            default: new Date().toLocaleString()
         },
         updateAt: {
-            type: Date,
-            default: Date.now()
+            type: String,
+            default: new Date().toLocaleString()
         }
     }
 });
@@ -54,10 +53,10 @@ const ArticalSchema = new Schema({
 ArticalSchema.pre('save', function (next) {
     // 如果是新文章
     if (this.isNew) {
-        this.time.updateAt = this.time.createAt = Date.now();
+        this.time.updateAt = this.time.createAt = new Date().toLocaleString();
     } else {
         // 如果是编辑文章
-        this.time.updateAt = Date.now();
+        this.time.updateAt = new Date().toLocaleString();
     }
     next();
 });

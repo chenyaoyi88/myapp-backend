@@ -55,23 +55,25 @@ router.post('/', function (req, res, next) {
         res.send(status.error());
     }
 
-    /**
-     * 添加文章到指定用户名上
-     * @param {*} res 响应
-     * @param {*} insertData 要插入的数据
-     */
-    function artical_add(res, insertData) {
-        dbcontrol.insert(new Artical(insertData))
-            .then((resMsg) => {
-                console.log('添加文章成功: ' + resMsg);
-                res.send(status.success(null));
-            })
-            .catch((err) => {
-                console.log('添加文章失败: ' + err);
-                res.send(status.errorInsert());
-            });
-    }
-
 });
 
+/**
+ * 添加文章到指定用户名上
+ * @param {*} res 响应
+ * @param {*} insertData 要插入的数据
+ */
+function artical_add(res, insertData) {
+    dbcontrol.insert(new Artical(insertData))
+        .then((resMsg) => {
+            console.log('添加文章成功: ' + resMsg);
+            res.send(status.success(null));
+        })
+        .catch((err) => {
+            console.log('添加文章失败: ' + err);
+            res.send(status.errorInsert());
+        });
+}
+
 module.exports = router;
+
+// https://www.cnblogs.com/pspgbhu/p/5794160.html

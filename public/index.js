@@ -79,6 +79,7 @@ var radios = document.querySelectorAll('input[type="radio"]');
 var oArticalCover = document.getElementById('cover');
 var oArticalTag = document.getElementById('tag');
 var oArticalContent = document.getElementById('content');
+
 var oBtnUploadArtical = document.getElementById('articalUpload');
 var oBtnUploadReset = document.getElementById('articalReset');
 var artical = {
@@ -88,6 +89,10 @@ var artical = {
     tag: '',
     content: ''
 };
+var E = window.wangEditor;
+var editor = new E('#editor');
+editor.create();
+var oBtnSetText = document.getElementById('setText');
 
 oBtnUploadArtical.addEventListener('click', function () {
     for (var i = 0; i < radios.length; i++) {
@@ -98,7 +103,7 @@ oBtnUploadArtical.addEventListener('click', function () {
     artical.title = oArticalTitle.value;
     artical.cover = oArticalCover.value;
     artical.tag = oArticalTag.value;
-    artical.content = oArticalContent.value;
+    artical.content = editor.txt.html();
     console.log(artical);
     ajax.post(articalUpload, artical)
     .then((data) => {
@@ -120,6 +125,9 @@ oBtnUploadReset.addEventListener('click', function () {
     }
 });
 
+setText.addEventListener('click', function () {
+    editor.txt.html('<p>用 JS 设置的内容</p>');
+});
 
 
 
