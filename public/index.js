@@ -9,7 +9,9 @@ const url = 'http://127.0.0.1:8888';
 const registerUrl = url + '/users/register';
 const loginUrl = url + '/users/login';
 const tokenCheckUrl = url + '/check';
-const articalUpload = url + '/articals/upload';
+const articalUpload = url + '/articals/add';
+const articalDownload = url + '/articals/list';
+const articalEdit = url + '/articals/edit';
 
 oBtnSignUp.addEventListener('click', function () {
     if (!(/\S/.test(sUserName.value)) || !(/\S/.test(sPassword.value))) {
@@ -104,8 +106,10 @@ oBtnUploadArtical.addEventListener('click', function () {
     artical.cover = oArticalCover.value;
     artical.tag = oArticalTag.value;
     artical.content = editor.txt.html();
+    artical.articalId = '5a169646d01b392f94fc0dce';
     console.log(artical);
-    ajax.post(articalUpload, artical)
+    // ajax.post(articalUpload, artical)
+    ajax.post(articalEdit, artical)
     .then((data) => {
         alert(JSON.stringify(data));
     })
@@ -125,8 +129,14 @@ oBtnUploadReset.addEventListener('click', function () {
     }
 });
 
-setText.addEventListener('click', function () {
-    editor.txt.html('<p>用 JS 设置的内容</p>');
+oBtnSetText.addEventListener('click', function () {
+    ajax.get(articalDownload)
+    .then((res) => {
+        editor.txt.html(res.data[0].content);
+    })
+    .catch((err) => {
+        alert('下载文章失败');
+    });
 });
 
 

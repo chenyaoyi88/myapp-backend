@@ -19,15 +19,13 @@ const UserSchema = new Schema({
     type: String
   },
   //最近登录时间+
-  logininfo: {
-    createAt: {
-      type: String,
-      default: new Date().toLocaleString()
-    },
-    updateAt: {
-      type: String,
-      default: new Date().toLocaleString()
-    }
+  createTime: {
+    type: String,
+    default: new Date().toLocaleString()
+  },
+  updateTime: {
+    type: String,
+    default: new Date().toLocaleString()
   }
 });
 
@@ -38,7 +36,7 @@ UserSchema.pre('save', function (next) {
   const user = this;
   // 如果是新注册的，添加创建和登录时间，同时加盐和哈希
   if (this.isModified('password') || this.isNew) {
-    this.logininfo.updateAt = this.logininfo.createAt = new Date().toLocaleString();
+    this.updateTime = this.createTime = new Date().toLocaleString();
 
     // 密码加盐
     bcrypt.genSalt(10, function (err, salt) {
@@ -65,7 +63,7 @@ UserSchema.pre('save', function (next) {
     
   } else {
     // 如果是用户登录，则更新登录时间
-    this.logininfo.updateAt = new Date().toLocaleString();
+    this.updateTime = new Date().toLocaleString();
     next();
   }
 });

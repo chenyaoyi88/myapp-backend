@@ -37,27 +37,36 @@ const ArticalSchema = new Schema({
         type: Number,
         default: 0
     },
-    // 创建/更新时间+
-    time: {
-        createAt: {
-            type: String,
-            default: new Date().toLocaleString()
-        },
-        updateAt: {
-            type: String,
-            default: new Date().toLocaleString()
-        }
+    // 创建时间
+    createTime: {
+        type: String,
+        default: new Date().toLocaleString()
+    },
+    // 更新时间
+    updateTime: {
+        type: String,
+        default: new Date().toLocaleString()  
     }
 });
 
 ArticalSchema.pre('save', function (next) {
     // 如果是新文章
     if (this.isNew) {
-        this.time.updateAt = this.time.createAt = new Date().toLocaleString();
+        this.updateTime = this.createTime= new Date().toLocaleString();
     } else {
         // 如果是编辑文章
-        this.time.updateAt = new Date().toLocaleString();
+        this.updateTime = new Date().toLocaleString();
     }
+    next();
+});
+
+ArticalSchema.pre('update', function (next) {
+    // update 的时候触发
+    this.update({}, {
+        $set: {
+            updateTime: new Date().toLocaleString()
+        }
+    });
     next();
 });
 

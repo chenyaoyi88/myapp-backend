@@ -81,22 +81,48 @@ const dbControl = {
     });
   },
   update: function (Model, conditions, updateConditions) {
-    return Model.update(conditions, updateConditions, function (err, res) {
-      if (err) {
-        console.log("更新数据失败:" + err);
-      } else {
-        console.log("更新数据成功:" + res);
-      }
+    return new Promise((resolve, reject) => {
+      Model.update(conditions, updateConditions, function (err, res) {
+        if (err) {
+          console.log("更新数据失败:" + err);
+          reject(err);
+        } else {
+          console.log("更新数据成功:" + res);
+          resolve(res);
+        }
+      });
     });
+
+    // return Model.update(conditions, updateConditions, function (err, res) {
+    //   if (err) {
+    //     console.log("更新数据失败:" + err);
+    //   } else {
+    //     console.log("更新数据成功:" + res);
+    //   }
+    // });
   },
   updateById: function (Model, id, updateConditions) {
-    return Model.findByIdAndUpdate(id, updateConditions, function (err, res) {
-      if (err) {
-        console.log("根据ID更新数据失败:" + err);
-      } else {
-        console.log("根据ID更新数据成功:" + res);
-      }
+
+    return new Promise((resolve, reject) => {
+      Model.findByIdAndUpdate(id, updateConditions, { new: true }, function (err, res) {
+        if (err) {
+          console.log("根据ID更新数据失败:" + err);
+          reject(err);
+        } else {
+          console.log("根据ID更新数据成功:" + res);
+          resolve(res);
+        }
+      });
     });
+
+    // return Model.findByIdAndUpdate(id, updateConditions, { new: true }, function (err, res) {
+    //   if (err) {
+    //     console.log("根据ID更新数据失败:" + err);
+    //   } else {
+    //     console.log("根据ID更新数据成功:" + res);
+    //   }
+    // });
+
   }
 };
 

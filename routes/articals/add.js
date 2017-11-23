@@ -8,8 +8,8 @@ const status = require('../../server/shared/status');
 const validate = require('../../server/shared/validate');
 const colors = require('colors');
 
-// 上传状态
-const uploadStatus = {
+// 状态-添加文章
+const addStatus = {
     someEmpty: {
         code: '3001',
         msg: '操作失败，请检查必填项',
@@ -20,7 +20,7 @@ const uploadStatus = {
 /**
  * @description 上传文章
  */
-router.post('/', function (req, res, next) {
+router.post('/', function (req, res) {
 
     const articalTitle = req.body.title;
     const articalType = req.body.type;
@@ -28,7 +28,7 @@ router.post('/', function (req, res, next) {
 
     // 如果有必填项没有填，返回错误
     if (!(articalTitle && articalType && articalContent)) {
-        res.send(uploadStatus.someEmpty);
+        res.send(addStatus.someEmpty);
         return;
     }
 
