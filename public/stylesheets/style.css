@@ -1,8 +1,85 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@import './reset.css';
+
+hr {
+	border: 0;
+	border-bottom: 1px solid #eee;
 }
 
-a {
-  color: #00B7FF;
+p {
+	white-space: nowrap;
+}
+
+#infoWin {
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.driver_info {
+	margin: 10px 0;
+}
+
+.plate {
+	font-size: 14px;
+	color: #999;
+	background-color: #f0f0f0;
+}
+
+.driver_mobile {
+	margin-right: 10px;
+}
+
+.car_state {
+	color: #f8585d;
+}
+
+.ordered_time,
+.order_id,
+.sender_name,
+.sender_tel,
+.receiver_name,
+.receiver_tel {
+	color: #999;
+}
+
+.ordered_time {
+	margin-right: 30px;
+}
+
+.sender_name,
+.receiver_name {
+	margin-right: 20px;
+}
+
+.order_id {
+	float: right;
+}
+
+.sender_addr,
+.receiver_addr {
+	position: relative;
+	padding-left: 20px;
+	font-size: 18px;
+	color: #333;
+}
+
+.sender_addr:before {
+	position: absolute;
+	top: 10px;
+	left: 0;
+	content: '';
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: #04c144;
+}
+
+.receiver_addr:before {
+	position: absolute;
+	top: 10px;
+	left: 0;
+	content: '';
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: #ff0000;
 }

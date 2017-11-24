@@ -108,8 +108,8 @@ oBtnUploadArtical.addEventListener('click', function () {
     artical.content = editor.txt.html();
     artical.articalId = '5a169646d01b392f94fc0dce';
     console.log(artical);
-    // ajax.post(articalUpload, artical)
-    ajax.post(articalEdit, artical)
+    ajax.post(articalUpload, artical)
+    // ajax.post(articalEdit, artical)
     .then((data) => {
         alert(JSON.stringify(data));
     })
@@ -141,65 +141,3 @@ oBtnSetText.addEventListener('click', function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-function checkItem(reqData, checkArr) {
-    let isEmpty = function (obj) {
-        for (let pro in obj) {
-            if (obj[pro]) {
-                // 对象有值，返回 false
-                return false
-            }
-        }
-        // 对象为空，返回 true
-        return true;
-    }
-
-    if (isEmpty(reqData)) {
-        // 对象为空
-        return true;
-    } else {
-        // 对象不为空
-        if (!(checkArr && checkArr instanceof Array && checkArr.length)) {
-            // 数组为空，只检查对象
-            return false;
-        } else {
-            // 数组不为空
-            console.warn('有数组');
-            const maxLen = checkArr.length;
-            let count = 0;
-
-            for (let pro in reqData) {
-                for (let i = 0; i < checkArr.length; i++) {
-                    if (pro === checkArr[i]) {
-                        count++;
-                    }
-                }
-            }
-
-            if (count === maxLen) {
-                // 必填项已填
-                return true;
-            } else {
-                // 有必填项没有填，返回 false
-                return false;
-            }
-        }
-    }
-}
-
-var obj = {
-    name: 'cyy',
-    // age: 18,
-    // school: 'abc'
-};
-
-// console.log(checkItem(obj, ['abc']));

@@ -87,7 +87,7 @@ const dbControl = {
           console.log("更新数据失败:" + err);
           reject(err);
         } else {
-          console.log("更新数据成功:" + res);
+          console.log("更新数据成功:" + JSON.stringify(res));
           resolve(res);
         }
       });
