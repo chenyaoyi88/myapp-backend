@@ -37,6 +37,9 @@ function artical_findAll(res, conditions) {
  */
 router.get('/', function (req, res) {
 
+    const pageSize = req.query.pageSize;
+    const pageNo = req.query.pageNo;
+
     // 检查 token
     const token = req.headers.token;
     fnToken.verify(res, token, (decoded) => {

@@ -9,18 +9,8 @@ const bodyParser = require('body-parser');
 // const colors = require('colors');
 
 const mongoose = require('mongoose');
-// 用户认证模块 passport
-const passport = require('passport');
-// token 验证模块
-// const Strategy = require('passport-http-bearer').Strategy;
 //全局配置
 const config = require('./config');
-
-// // 将 session 存储于 mongodb，需结合 express-session 使用
-// const session = require('express-session');
-// const mongoose = require('mongoose');
-// const MongoStore = require('connect-mongo')(session);
-// const sessionConfig = require('./config/session');
 
 const index = require('./routes/index');
 // 用户注册、登录、退出 
@@ -59,9 +49,6 @@ app.all('*', function (req, res, next) {
   }
 });
 
-// 初始化passport模块
-app.use(passport.initialize()); 
-
 // 让 mongoose 操作可以 Promise 化
 mongoose.Promise = Promise;
 
@@ -84,23 +71,6 @@ mongoose.connection.on('error', function (err) {
 mongoose.connection.on('disconnected', function () {
   console.log('Mongoose connection disconnected');
 });
-
-// // session 中间件
-// app.use(session({
-//   // 设置 cookie 中保存 session id 的字段名称
-//   name: sessionConfig.session.key, 
-//   // 通过设置 secret 来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改
-//   secret: sessionConfig.session.secret, 
-//   cookie: {
-//     // 过期时间，过期后 cookie 中的 session id 自动删除
-//     maxAge: sessionConfig.session.maxAge 
-//   },
-//   // 将 session 存储到 mongodb
-//   store: new MongoStore({ 
-//     // mongodb 地址
-//     url: sessionConfig.mongodb 
-//   })
-// }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
