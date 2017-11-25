@@ -109,13 +109,13 @@ oBtnUploadArtical.addEventListener('click', function () {
     artical.articalId = '5a169646d01b392f94fc0dce';
     console.log(artical);
     ajax.post(articalUpload, artical)
-    // ajax.post(articalEdit, artical)
-    .then((data) => {
-        alert(JSON.stringify(data));
-    })
-    .catch((err) => {
-        alert('上传文章失败');
-    });
+        // ajax.post(articalEdit, artical)
+        .then((data) => {
+            alert(JSON.stringify(data));
+        })
+        .catch((err) => {
+            alert('上传文章失败');
+        });
 });
 
 oBtnUploadReset.addEventListener('click', function () {
@@ -123,7 +123,7 @@ oBtnUploadReset.addEventListener('click', function () {
     oArticalCover.value = '';
     oArticalTag.value = '';
     oArticalContent.value = '';
-    radios[0].checked = true; 
+    radios[0].checked = true;
     for (let pro in artical) {
         artical[pro] = '';
     }
@@ -131,13 +131,10 @@ oBtnUploadReset.addEventListener('click', function () {
 
 oBtnSetText.addEventListener('click', function () {
     ajax.get(articalDownload)
-    .then((res) => {
-        editor.txt.html(res.data[0].content);
-    })
-    .catch((err) => {
-        alert('下载文章失败');
-    });
+        .then((res) => {
+            editor.txt.html(res.data[0].content);
+        })
+        .catch((err) => {
+            alert('下载文章失败');
+        });
 });
-
-
-

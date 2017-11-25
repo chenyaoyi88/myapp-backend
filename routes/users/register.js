@@ -4,10 +4,8 @@ const User = require('../../server/models/user');
 const dbcontrol = require('../../server/dbcontrol');
 const status = require('../../server/shared/status');
 const validate = require('../../server/shared/validate');
-const colors = require('colors');
 
-/* GET users listing. */
-router.post('/', function (req, res, next) {
+router.post('/', function (req, res) {
 
   if (validate.isEmpty(req.body)) {
     res.send(status.empty);
@@ -15,7 +13,6 @@ router.post('/', function (req, res, next) {
   }
 
   const username = req.body.username;
-  const password = req.body.password;
 
   const findUser = function (callback) {
     dbcontrol.find(User, {
@@ -31,6 +28,7 @@ router.post('/', function (req, res, next) {
         }
       })
       .catch((err) => {
+        console.log('注册前查找用户失败：' + err);
         res.send(status.error());
       });
   }
@@ -40,12 +38,12 @@ router.post('/', function (req, res, next) {
     dbcontrol.insert(new User(req.body))
       .then((resMsg) => {
         // 数据添加成功
-        console.log('success: ' + resMsg);
+        console.log('注册用户成功: ' + resMsg);
         res.send(status.success(null));
       })
       .catch((err) => {
         // 数据添加失败
-        console.log('err: ' + err);
+        console.log('注册用户失败: ' + err);
         res.send(status.errorInsert());
       });
   });

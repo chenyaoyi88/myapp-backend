@@ -1,12 +1,12 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
+// const favicon = require('serve-favicon');
 // 关于http请求的日志中间件
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const colors = require('colors');
+// const colors = require('colors');
 
 const mongoose = require('mongoose');
 // 用户认证模块 passport
@@ -27,6 +27,8 @@ const index = require('./routes/index');
 const register = require('./routes/users/register');
 // 用户登录
 const login = require('./routes/users/login');
+// 用户退出
+const logout = require('./routes/users/logout');
 // 添加添加
 const artical_add = require('./routes/articals/add');
 // 查询文章列表
@@ -117,6 +119,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users/register', register);
 app.use('/users/login', login);
+app.use('/users/logout', logout);
 app.use('/articals/add', artical_add);
 app.use('/articals/list', artical_list);
 app.use('/articals/delete', artical_delete);
@@ -132,7 +135,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

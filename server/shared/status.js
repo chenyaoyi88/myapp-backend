@@ -9,9 +9,7 @@ const defaultCode = {
   // 已存在
   exist: '1001',
   // 插入数据失败
-  errorInsert: '4001',
-  // 超时
-  timeout: '8888'
+  errorInsert: '4001'
 };
 
 const status = {
@@ -47,13 +45,6 @@ const status = {
     return {
       code: defaultCode.errorInsert,
       msg: '添加记录失败',
-      data: null
-    }
-  },
-  timeout: function () {
-    return {
-      code: defaultCode.timeout,
-      msg: '登录超时',
       data: null
     }
   },

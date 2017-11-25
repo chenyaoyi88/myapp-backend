@@ -2,11 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Artical = require('../../server/models/artical');
 const dbcontrol = require('../../server/dbcontrol');
-const jwt = require("jsonwebtoken");
-const config = require('../../config');
 const status = require('../../server/shared/status');
-const validate = require('../../server/shared/validate');
-const colors = require('colors');
+const fnToken = require('../../server/token');
 
 // 状态-添加文章
 const addStatus = {
@@ -33,27 +30,13 @@ router.post('/', function (req, res) {
     }
 
     const token = req.headers.token;
-    // console.log('***********'.yellow);
-    // console.log(token);
-    // console.log('***********'.yellow);
-    if (token) {
-        jwt.verify(token, config.secret, function (err, decoded) {
-            // console.log(decoded.username);
-            if (err) {
-                // token 验证失败：时间失效、伪造 => 超时（需要重新登录）
-                res.send(status.timeout());
-            } else {
-                // token 验证通过，插入文章数据
-                const articalData = Object.assign(req.body, {
-                    username: decoded.username
-                });
-                artical_add(res, articalData);
-            }
+    fnToken.verify(res, token, (decoded) => {
+        // token 验证通过，插入文章数据
+        const articalData = Object.assign(req.body, {
+            username: decoded.username
         });
-
-    } else {
-        res.send(status.error());
-    }
+        artical_add(res, articalData);
+    });
 
 });
 
@@ -64,16 +47,14 @@ router.post('/', function (req, res) {
  */
 function artical_add(res, insertData) {
     dbcontrol.insert(new Artical(insertData))
-        .then((resMsg) => {
-            console.log('添加文章成功: ' + resMsg);
-            res.send(status.success(null));
-        })
-        .catch((err) => {
-            console.log('添加文章失败: ' + err);
-            res.send(status.errorInsert());
-        });
+    .then((resMsg) => {
+        console.log('添加文章成功: ' + resMsg);
+        res.send(status.success(null));
+    })
+    .catch((err) => {
+        console.log('添加文章失败: ' + err);
+        res.send(status.errorInsert());
+    });
 }
 
 module.exports = router;
-
-// https://www.cnblogs.com/pspgbhu/p/5794160.html

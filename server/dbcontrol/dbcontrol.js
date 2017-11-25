@@ -1,3 +1,11 @@
+function objectIsEmpty(obj) {
+  for (let item in obj) {
+    return false;
+  }
+  return true;
+}
+
+
 const dbControl = {
   insert: function (Model) {
     return Model.save(function (err, res) {
@@ -26,8 +34,8 @@ const dbControl = {
       }
     });
   },
-  removeByConditions: function (Model, conditions) {
-    return Model.findByIdAndRemove(conditions, function (err, res) {
+  removeByConditions: function (Model, conditions, options) {
+    return Model.findOneAndRemove(conditions, options || {}, function (err, res) {
       if (err) {
         console.log("根据条件删除数据失败:" + err);
       } else {
@@ -36,18 +44,6 @@ const dbControl = {
     });
   },
   find: function (Model, conditions, options) {
-    // return new Promise((resolve, reject) => {
-    //   Model.find(conditions, options || {}, function (err, res) {
-    //     if (err) {
-    //       console.log("Error:" + err);
-    //       reject(err);
-    //     } else {
-    //       console.log("Res:" + res);
-    //       resolve(objectIsEmpty(res) ? null : res);
-    //     }
-    //   });
-    // });
-
     let promise = Model.find(conditions, options || {}, function (err, res) {
       if (err) {
         console.log("查找数据失败:" + err);
@@ -59,7 +55,17 @@ const dbControl = {
     });
 
     return promise.then((res) => {
+      // 有空数组的情况[]
       return objectIsEmpty(res) ? null : res;
+    });
+  },
+  findOne: function (Model, conditions) {
+    return Model.findOne(conditions, function (err, res) {
+      if (err) {
+        console.log("根据查找一条数据失败:" + err);
+      } else {
+        console.log("根据查找一条数据成功:" + res);
+      }
     });
   },
   findById: function (Model, id) {
@@ -92,19 +98,12 @@ const dbControl = {
         }
       });
     });
-
-    // return Model.update(conditions, updateConditions, function (err, res) {
-    //   if (err) {
-    //     console.log("更新数据失败:" + err);
-    //   } else {
-    //     console.log("更新数据成功:" + res);
-    //   }
-    // });
   },
   updateById: function (Model, id, updateConditions) {
-
     return new Promise((resolve, reject) => {
-      Model.findByIdAndUpdate(id, updateConditions, { new: true }, function (err, res) {
+      Model.findByIdAndUpdate(id, updateConditions, {
+        new: true
+      }, function (err, res) {
         if (err) {
           console.log("根据ID更新数据失败:" + err);
           reject(err);
@@ -114,23 +113,7 @@ const dbControl = {
         }
       });
     });
-
-    // return Model.findByIdAndUpdate(id, updateConditions, { new: true }, function (err, res) {
-    //   if (err) {
-    //     console.log("根据ID更新数据失败:" + err);
-    //   } else {
-    //     console.log("根据ID更新数据成功:" + res);
-    //   }
-    // });
-
   }
 };
-
-function objectIsEmpty(obj) {
-  for (let item in obj) {
-    return false;
-  }
-  return true;
-}
 
 module.exports = dbControl;

@@ -2,11 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Artical = require('../../server/models/artical');
 const dbcontrol = require('../../server/dbcontrol');
-const jwt = require("jsonwebtoken");
-const config = require('../../config');
 const status = require('../../server/shared/status');
-const validate = require('../../server/shared/validate');
-const colors = require('colors');
+const fnToken = require('../../server/token');
 
 // 状态-根据 ID 获取指定文章详情
 const deleteStatus = {
@@ -18,10 +15,27 @@ const deleteStatus = {
 };
 
 /**
+ * 获取文章详情返回
+ * @param {*} res response  
+ * @param {*} id 文章 id
+ */
+function artical_detail(res, id) {
+    dbcontrol.findById(Artical, id)
+    .then((data) => {
+        console.log('获取文章详情成功：' + data);
+        res.send(status.success(data));
+    })
+    .catch((err) => {
+        console.log('获取文章详情失败：' + err);
+        res.send(status.error());
+    });
+}
+
+/**
  * @description 根据 ID 获取指定文章详情
  */
-router.post('/', function (req, res, next) {
-    
+router.post('/', function (req, res) {
+
     const articalId = req.body.articalId;
 
     // 如果没有文章 ID，返回错误
@@ -31,39 +45,11 @@ router.post('/', function (req, res, next) {
     }
 
     const token = req.headers.token;
-    // console.log('***********'.yellow);
-    // console.log(token);
-    // console.log('***********'.yellow);
-    if (token) {
-        jwt.verify(token, config.secret, function (err, decoded) {
-            // console.log(decoded.username);
-            if (err) {
-                // token 验证失败：时间失效、伪造 => 超时（需要重新登录）
-                res.send(status.timeout());
-            } else {
-                // token 验证通过，获取指定文章
-                artical_detail(res, articalId);
-            }
-        });
-    } else {
-        res.send(status.error());
-    }
+    fnToken.verify(res, token, () => {
+        // token 验证通过，获取指定文章
+        artical_detail(res, articalId);
+    });
 
 });
-
-/**
- * 获取文章详情返回
- * @param {*} res response  
- * @param {*} id 文章 id
- */
-function artical_detail(res, id) {
-    dbcontrol.findById(Artical, id)
-    .then((data) => {
-        res.send(status.success(data));
-    })
-    .catch((err) => {
-        res.send(status.error());
-    });
-}
 
 module.exports = router;

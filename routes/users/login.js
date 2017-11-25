@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../../server/models/user');
+const TokenSave = require('../../server/models/token');
 const dbcontrol = require('../../server/dbcontrol');
 const status = require('../../server/shared/status');
 const validate = require('../../server/shared/validate');
-const config = require('../../config');
-// token 
-const jwt = require('jsonwebtoken');
+const fnToken = require('../../server/token');
 
-const colors = require('colors');
+// const colors = require('colors');
 
 // 用户登录状态
 const loginStatus = {
@@ -29,51 +28,58 @@ const loginStatus = {
   }
 };
 
-/* GET users listing. */
-router.post('/', function (req, res, next) {
+router.post('/', function (req, res) {
 
   if (validate.isEmpty(req.body)) {
     res.send(status.empty);
     return;
   }
 
-  // console.log('**********'.green);
-  // console.log(req);
-  // console.log('**********'.green);
-
   const username = req.body.username;
 
-  dbcontrol.find(User, { username })
+  dbcontrol.find(User, {
+    username
+  })
   .then((data) => {
-    // 用户名匹配
-    if (data) {
-      // 验证用户名对应的密码
-      User.comparePassword(req.body.password, data[0].password, (isMatch) => {
-        if (isMatch) {
-          /**
-           * @description 根据用户名生成对应的 token
-           * @param 参数一：必须是个 object, buffer或者string，这里用用户名来做标识符
-           * @param 参数二：包含 HMAC 算法的密钥或 RSA 和 ECDSA 的 PEM 编码私钥的 string 或 buffer， 用来加密的字符串
-           * @param 参数三：好多参数，这里只设置过期时间，具体翻译：https://segmentfault.com/a/1190000009494020
-           */
-          const token = jwt.sign({
-            username: data[0].username
-          }, config.secret, {
-            // 过期时间，单位秒 
-            expiresIn: 3600*24
-          });
-          // 返回给前端
-          res.send(status.success(null, { token: token }));
-        } else {
-          res.send(loginStatus.userPasswordError);
-        }
-      });
-    } else {
+    if (!data) {
       // 用户不存在
       res.send(loginStatus.userNotExist);
+    } else {
+      // 用户存在，用户名匹配
+      // 验证用户名对应的密码
+      User.comparePassword(req.body.password, data[0].password, (isMatch) => {
+        if (!isMatch) {
+          // 密码不匹配
+          res.send(loginStatus.userPasswordError);
+        } else {
+          // 密码正确
+          const username = data[0].username;
+          const token = fnToken.sign(username);
+
+          // 保存新 token
+          // note: 如果已登录的情况下没有退出而又再次登录，插入 token 会失败
+          fnToken.find(res, { username }, () => {
+            // 有 token 记录了，更新
+            dbcontrol.update(TokenSave, { username }, { token });
+          }, () => {
+            // 没有 token 记录，插入
+            dbcontrol.insert(new TokenSave({
+              username: username,
+              token: token
+            }));
+          });
+
+          // 返回 token 给前端
+          res.send(status.success(null, {
+            token: token
+          }));
+
+        }
+      });
     }
   })
   .catch((err) => {
+    console.log('查找用户文章失败：' + err);
     res.send(status.error());
   });
 
