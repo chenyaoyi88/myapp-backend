@@ -119,6 +119,7 @@ oBtnUploadArtical.addEventListener('click', function () {
 });
 
 oBtnUploadReset.addEventListener('click', function () {
+
     oArticalTitle.value = '';
     oArticalCover.value = '';
     oArticalTag.value = '';
@@ -138,3 +139,48 @@ oBtnSetText.addEventListener('click', function () {
             alert('下载文章失败');
         });
 });
+
+
+var query = {
+    pageSize: 10,
+    pageNo: 1,
+    title: '爱爱爱',
+    tag: '标签',
+    type: 'sport',
+    hits: /123/,
+    content: ''
+};
+
+function queryParamsSplit(oParams) {
+    if (!(oParams.constructor === Object)) {
+        return {
+            params: {},
+            page: {
+                pageNo: 1,
+                pageSize: 10
+            }
+        };
+    } else {
+        let params = {};
+        let page = {};
+
+        for (let pro in oParams) {
+            if (/pageSize/i.test(pro)) {
+                page.pageSize = oParams[pro];
+            } else if (/pageNo/i.test(pro)) {
+                page.pageNo = oParams[pro];
+            } else {
+                if (/\S/.test(oParams[pro])) {
+                    params[pro] = new RegExp(oParams[pro]);
+                }
+            }
+        }
+
+        return {
+            params,
+            page
+        };
+    }
+}
+
+console.log(queryParamsSplit(query));

@@ -26,7 +26,6 @@
         "no-empty-function": "warn",
         "no-eval": "warn",
         "no-with": "warn",
-        "strict": "warn",
-        "no-use-before-define": "warn"
+        "strict": "warn"
     }
 }
