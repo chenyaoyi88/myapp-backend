@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Artical = require('../../server/models/artical');
-const dbcontrol = require('../../server/dbcontrol');
+const dao = require('../../server/dao');
 const status = require('../../server/shared/status');
 const fnToken = require('../../server/token');
 
@@ -46,7 +46,7 @@ router.post('/', function (req, res) {
  * @param {*} insertData 要插入的数据
  */
 function artical_add(res, insertData) {
-    dbcontrol.insert(new Artical(insertData))
+    dao.insert(new Artical(insertData))
     .then((resMsg) => {
         console.log('添加文章成功: ' + resMsg);
         res.send(status.success(null));

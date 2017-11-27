@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Artical = require('../../server/models/artical');
-const dbcontrol = require('../../server/dbcontrol');
+const dao = require('../../server/dao');
 const status = require('../../server/shared/status');
 const fnToken = require('../../server/token');
 
@@ -41,7 +41,7 @@ router.post('/', function (req, res, next) {
  * @param {*} id    文章id
  */
 function artical_delete(res, id) {
-    dbcontrol.removeById(Artical, id)
+    dao.removeById(Artical, id)
     .then((data) => {
         console.log('删除文章成功：' + data);
         res.send(status.success(null));

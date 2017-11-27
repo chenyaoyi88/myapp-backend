@@ -1,3 +1,8 @@
+/**
+ * @description 检测对象是否为空
+ * @param {*Object} obj 要检测的对象
+ * @returns {*Boolean}  false 不为空 true 为空
+ */
 function objectIsEmpty(obj) {
   for (let item in obj) {
     return false;
@@ -5,8 +10,7 @@ function objectIsEmpty(obj) {
   return true;
 }
 
-
-const dbControl = {
+const dao = {
   insert: function (Model) {
     return Model.save(function (err, res) {
       if (err) {
@@ -113,7 +117,33 @@ const dbControl = {
         }
       });
     });
+  },
+  pagination: function (Model, params, page) {
+
+    return Model.find(params).limit(Number(page.pageSize)).skip(Number(page.pageNo));
+
+    // Model.find(params).limit(Number(page.pageSize)).skip(Number(page.pageNo)).exec((err, data) => {
+    //     if (err) {
+    //         console.log('查找用户文章列表失败：' + err);
+    //         res.send(status.error());
+    //     } else {
+    //         console.log('查找用户文章列表成功：');
+    //         Model.count(params, function (err, count) {
+    //             res.send({
+    //                 code: '0000',
+    //                 msg: '操作成功',
+    //                 data: {
+    //                     pageNo: page.pageNo + 1,
+    //                     pageSize: page.pageSize,
+    //                     total: count,
+    //                     data: data
+    //                 }
+    //             });
+    //         });
+    //     }
+    // });
+
   }
 };
 
-module.exports = dbControl;
+module.exports = dao;

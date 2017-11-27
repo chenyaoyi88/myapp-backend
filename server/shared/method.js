@@ -16,18 +16,23 @@ const commonMethod = {
         } else {
             let params = {};
             let page = {};
+            let pageSize = 10;
+            let pageNo = 0;
 
             for (let pro in oParams) {
                 if (/pageSize/i.test(pro)) {
-                    page.pageSize = oParams[pro];
+                    pageSize = Number(oParams[pro]) || 10;
                 } else if (/pageNo/i.test(pro)) {
-                    page.pageNo = oParams[pro];
+                    pageNo = oParams[pro];
                 } else {
                     if (/\S/.test(oParams[pro])) {
                         params[pro] = new RegExp(oParams[pro]);
                     }
                 }
             }
+
+            page.pageSize = pageSize;
+            page.pageNo = pageNo < 1 ? 0 : (pageNo - 1) * pageSize;
 
             return {
                 params,

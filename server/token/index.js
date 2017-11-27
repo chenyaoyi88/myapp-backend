@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../../config');
-const dbcontrol = require('../dbcontrol');
+const dao = require('../dao');
 const TokenSave = require('../models/token');
 
 const tokenStatus = {
@@ -58,7 +58,7 @@ const fnToken = {
    */
   find: function (res, tokenCheckConditions, fnSuccess, fnFail) {
     // 带了 token
-    dbcontrol.findOne(TokenSave, tokenCheckConditions)
+    dao.findOne(TokenSave, tokenCheckConditions)
     // 查找成功
     .then((data) => {
       // data 没有数据
@@ -122,7 +122,7 @@ const fnToken = {
   remove: function (res, tokenString) {
     // 先校验
     this.verify(res, tokenString, (decoded) => {
-      dbcontrol.removeByConditions(TokenSave, {
+      dao.removeByConditions(TokenSave, {
           username: decoded.username
         })
         .then((data) => {

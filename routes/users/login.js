@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../../server/models/user');
 const TokenSave = require('../../server/models/token');
-const dbcontrol = require('../../server/dbcontrol');
+const dao = require('../../server/dao');
 const status = require('../../server/shared/status');
 const validate = require('../../server/shared/validate');
 const fnToken = require('../../server/token');
@@ -37,7 +37,7 @@ router.post('/', function (req, res) {
 
   const username = req.body.username;
 
-  dbcontrol.find(User, {
+  dao.find(User, {
     username
   })
   .then((data) => {
@@ -60,10 +60,10 @@ router.post('/', function (req, res) {
           // note: 如果已登录的情况下没有退出而又再次登录，插入 token 会失败
           fnToken.find(res, { username }, () => {
             // 有 token 记录了，更新
-            dbcontrol.update(TokenSave, { username }, { token });
+            dao.update(TokenSave, { username }, { token });
           }, () => {
             // 没有 token 记录，插入
-            dbcontrol.insert(new TokenSave({
+            dao.insert(new TokenSave({
               username: username,
               token: token
             }));

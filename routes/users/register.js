@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../../server/models/user');
-const dbcontrol = require('../../server/dbcontrol');
+const dao = require('../../server/dao');
 const status = require('../../server/shared/status');
 const validate = require('../../server/shared/validate');
 
@@ -15,7 +15,7 @@ router.post('/', function (req, res) {
   const username = req.body.username;
 
   const findUser = function (callback) {
-    dbcontrol.find(User, {
+    dao.find(User, {
         username
       })
       .then((data) => {
@@ -35,7 +35,7 @@ router.post('/', function (req, res) {
 
   findUser(() => {
     // 没有数据，可以添加
-    dbcontrol.insert(new User(req.body))
+    dao.insert(new User(req.body))
       .then((resMsg) => {
         // 数据添加成功
         console.log('注册用户成功: ' + resMsg);

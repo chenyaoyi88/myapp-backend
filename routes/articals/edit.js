@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Artical = require('../../server/models/artical');
-const dbcontrol = require('../../server/dbcontrol');
+const dao = require('../../server/dao');
 const fnToken = require('../../server/token');
 const status = require('../../server/shared/status');
 
@@ -27,7 +27,7 @@ const deleteStatus = {
  * @param {any} updateConditions 要更新的内容
  */
 function artical_edit(res, id, updateConditions) {
-    dbcontrol.update(Artical, { _id: id }, updateConditions)
+    dao.update(Artical, { _id: id }, updateConditions)
     .then((data) => {
         console.log('更新文章成功：' + data);
         res.send(status.success(null));

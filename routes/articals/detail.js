@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Artical = require('../../server/models/artical');
-const dbcontrol = require('../../server/dbcontrol');
+const dao = require('../../server/dao');
 const status = require('../../server/shared/status');
 const fnToken = require('../../server/token');
 
@@ -20,7 +20,7 @@ const deleteStatus = {
  * @param {*} id 文章 id
  */
 function artical_detail(res, id) {
-    dbcontrol.findById(Artical, id)
+    dao.findById(Artical, id)
     .then((data) => {
         console.log('获取文章详情成功：' + data);
         res.send(status.success(data));
