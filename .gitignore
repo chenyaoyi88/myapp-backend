@@ -27,6 +27,9 @@ Thumbs.db
 # 文档 #
 /.docs
 
+# 图片 #
+/public/avatar
+
 # Angular #
 *.ngfactory.ts
 *.css.shim.ts
