@@ -29,6 +29,8 @@ const artical_delete = require('./routes/articals/delete');
 const artical_detail = require('./routes/articals/detail');
 // 编辑/修改文章
 const artical_edit = require('./routes/articals/edit');
+// 上传头像
+const file_uploadAvatar = require('./routes/files/upload_avatar');
 // 校验 token 
 const check = require('./routes/check');
 
@@ -95,6 +97,7 @@ app.use('/articals/list', artical_list);
 app.use('/articals/delete', artical_delete);
 app.use('/articals/detail', artical_detail);
 app.use('/articals/edit', artical_edit);
+app.use('/files/upload_avatar', file_uploadAvatar);
 app.use('/check', check);
 
 // catch 404 and forward to error handler

@@ -39,6 +39,22 @@ const commonMethod = {
                 page
             };
         }
+    },
+    /**
+     * @description 获取详细时间
+     * @returns {String} 例如：201710181111111
+     */
+    getTime: function () {
+        const oDate = new Date();
+        const sTime = 
+            oDate.getFullYear().toString() + 'y' +
+            (oDate.getMonth() + 1) + 'm' +
+            oDate.getDate().toString() + 'd' +
+            oDate.getHours().toString() + 'h' +
+            oDate.getMinutes().toString() + 'min' +
+            oDate.getSeconds().toString() + 'sec' +
+            oDate.getMilliseconds().toString();
+        return sTime;
     }
 };
 
