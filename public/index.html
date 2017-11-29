@@ -120,6 +120,9 @@
 				url: url,
 				type: 'POST',
 				data: formData,
+				headers: {
+					token: sessionStorage.getItem('token')
+				},
 
 				/**
 				 * 必须false才会避开jQuery对 formdata 的默认处理
