@@ -10,13 +10,13 @@
 
 后端：
 
-- node
-- express
-- mongodb
+- node      v9.1.0
+- express   v4.14
+- mongodb   v3.4
 
 前端：
 
-- angular+
+- angular+  v5.0.0
 
 ### 预期实现功能
 
@@ -36,3 +36,4 @@
 
 1. 用户注册、登录、退出、生成token
 2. 文章添加、删除、修改、获取详情、列表（分页）、头像上传
+3. 评论添加（需改进）
