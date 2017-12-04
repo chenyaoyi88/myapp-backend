@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
-const colors = require('colors');
+// const colors = require('colors');
 
 const UserSchema = new Schema({
   // 用户名
@@ -18,11 +18,12 @@ const UserSchema = new Schema({
   token: {
     type: String
   },
-  //最近登录时间+
+  // 帐号注册/创建时间
   createTime: {
     type: String,
     default: new Date().toLocaleString()
   },
+  // 帐号修改时间
   updateTime: {
     type: String,
     default: new Date().toLocaleString()
@@ -41,19 +42,11 @@ UserSchema.pre('save', function (next) {
     // 密码加盐
     bcrypt.genSalt(10, function (err, salt) {
       if (err) {
-        // console.log('**********'.green);
-        // console.log('genSalt err: ' + err);
-        // console.log('**********'.green);
         return next(err);
       }
       // 密码哈希
       bcrypt.hash(user.password, salt, function (err, hash) {
         if (err) {
-          // console.log('**********'.yellow);
-          // console.log('user.password: ' + user.password);
-          // console.log('salt: ' + salt);
-          // console.log('hash err: ' + err);
-          // console.log('**********'.yellow);
           return next(err);
         }
         user.password = hash;

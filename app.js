@@ -5,11 +5,7 @@ const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
-// const colors = require('colors');
-
 const mongoose = require('mongoose');
-//全局配置
 const config = require('./config');
 
 const index = require('./routes/index');
@@ -36,6 +32,8 @@ const check = require('./routes/check');
 
 const app = express();
 
+console.log(app.get('env'));
+
 /**
  * @description 允许跨域
  */
@@ -53,6 +51,8 @@ app.all('*', function (req, res, next) {
 
 // 让 mongoose 操作可以 Promise 化
 mongoose.Promise = Promise;
+
+// todo；判断环境要读取数据库
 
 // 连接数据库
 mongoose.connect(config.database, {
@@ -89,7 +89,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users/register', register);
+app.use('/users/register', function(req, res, next) {
+  // 中间件，用来处理一些多个接口都有一样处理逻辑的部分
+  console.log('中间件:', req.body);
+  next();
+}, register);
 app.use('/users/login', login);
 app.use('/users/logout', logout);
 app.use('/articals/add', artical_add);
