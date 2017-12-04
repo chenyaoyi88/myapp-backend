@@ -29,24 +29,11 @@ router.post('/', function (req, res) {
         return;
     }
 
-    const token = req.headers.token;
-    fnToken.verify(res, token, (decoded) => {
-        // token 验证通过，插入文章数据
-        const articalData = Object.assign(req.body, {
-            username: decoded.username
-        });
-        artical_add(res, articalData);
+    const articalData = Object.assign(req.body, {
+        username: req.tokenDecoded.username
     });
 
-});
-
-/**
- * 添加文章到指定用户名上
- * @param {*} res 响应
- * @param {*} insertData 要插入的数据
- */
-function artical_add(res, insertData) {
-    dao.insert(new Artical(insertData))
+    dao.insert(new Artical(articalData))
     .then((resMsg) => {
         console.log('添加文章成功: ' + resMsg);
         res.send(status.success(null));
@@ -55,6 +42,7 @@ function artical_add(res, insertData) {
         console.log('添加文章失败: ' + err);
         res.send(status.errorInsert());
     });
-}
+
+});
 
 module.exports = router;

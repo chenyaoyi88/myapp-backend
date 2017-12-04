@@ -3,7 +3,6 @@ const router = express.Router();
 const Artical = require('../../server/models/artical');
 const dao = require('../../server/dao');
 const status = require('../../server/shared/status');
-const fnToken = require('../../server/token');
 
 // 状态-删除文章
 const deleteStatus = {
@@ -17,7 +16,7 @@ const deleteStatus = {
 /**
  * @description 删除文章
  */
-router.post('/', function (req, res, next) {
+router.post('/', function (req, res) {
 
     const articalId = req.body.articalId;
 
@@ -26,22 +25,8 @@ router.post('/', function (req, res, next) {
         res.send(deleteStatus.lackID);
         return;
     }
-
-    const token = req.headers.token;
-    fnToken.verify(res, token, () => {
-        // token 验证通过，删除指定文章
-        artical_delete(res, articalId);
-    });
-
-});
-
-/**
- * @description 删除指定 id 的文章
- * @param {*} res   响应 
- * @param {*} id    文章id
- */
-function artical_delete(res, id) {
-    dao.removeById(Artical, id)
+    
+    dao.removeById(Artical, articalId)
     .then((data) => {
         console.log('删除文章成功：' + data);
         res.send(status.success(null));
@@ -50,6 +35,7 @@ function artical_delete(res, id) {
         console.log('删除文章失败：' + err);
         res.send(status.error());
     });
-}
+
+});
 
 module.exports = router;

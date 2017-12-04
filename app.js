@@ -27,6 +27,8 @@ const artical_detail = require('./routes/articals/detail');
 const artical_edit = require('./routes/articals/edit');
 // 上传头像
 const file_uploadAvatar = require('./routes/files/upload_avatar');
+// 添加文章评论
+const comment_add = require('./routes/comments/add');
 // 校验 token 
 const check = require('./routes/check');
 // 校验 token 中间件
@@ -90,21 +92,17 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// todo：在这里使用验证 token 的中间件
 app.use('/', index);
-app.use('/users/register', function(req, res, next) {
-  // 中间件，用来处理一些多个接口都有一样处理逻辑的部分
-  console.log('中间件:', req.body);
-  next();
-}, register);
+app.use('/users/register', register);
 app.use('/users/login', login);
 app.use('/users/logout', logout);
-app.use('/articals/add', artical_add);
-app.use('/articals/list', artical_list);
-app.use('/articals/delete', artical_delete);
-app.use('/articals/detail', artical_detail);
-app.use('/articals/edit', artical_edit);
+app.use('/articals/add', midCheckToken, artical_add);
+app.use('/articals/list', midCheckToken, artical_list);
+app.use('/articals/delete', midCheckToken, artical_delete);
+app.use('/articals/detail', midCheckToken, artical_detail);
+app.use('/articals/edit', midCheckToken, artical_edit);
 app.use('/files/upload_avatar', midCheckToken, file_uploadAvatar);
+app.use('/comments/add', midCheckToken, comment_add);
 app.use('/check', midCheckToken, check);
 
 // catch 404 and forward to error handler
