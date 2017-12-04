@@ -29,6 +29,8 @@ const artical_edit = require('./routes/articals/edit');
 const file_uploadAvatar = require('./routes/files/upload_avatar');
 // 校验 token 
 const check = require('./routes/check');
+// 校验 token 中间件
+const midCheckToken = require('./routes/check_token');
 
 const app = express();
 
@@ -41,7 +43,7 @@ app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-type,Accept,token');
-  res.header("Content-Type", "application/json;charset=utf-8");  
+  res.header("Content-Type", "application/json;charset=utf-8");
   if (req.method === 'OPTIONS') {
     res.sendStatus(200).end();
   } else {
@@ -88,6 +90,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// todo：在这里使用验证 token 的中间件
 app.use('/', index);
 app.use('/users/register', function(req, res, next) {
   // 中间件，用来处理一些多个接口都有一样处理逻辑的部分
@@ -101,8 +104,8 @@ app.use('/articals/list', artical_list);
 app.use('/articals/delete', artical_delete);
 app.use('/articals/detail', artical_detail);
 app.use('/articals/edit', artical_edit);
-app.use('/files/upload_avatar', file_uploadAvatar);
-app.use('/check', check);
+app.use('/files/upload_avatar', midCheckToken, file_uploadAvatar);
+app.use('/check', midCheckToken, check);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

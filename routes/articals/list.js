@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Artical = require('../../server/models/artical');
-// const dao = require('../../server/dao');
 const fnToken = require('../../server/token');
 const status = require('../../server/shared/status');
 const commonMethod = require('../../server/shared/method');
-// const colors = require('colors');
 
 // 状态-文章列表
 const listStatus = {
