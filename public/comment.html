@@ -9,13 +9,96 @@
 </head>
 
 <body>
-
-    <img src="http://myappbucket-1252753508.cosgz.myqcloud.com/Chrysanthemum.jpg" alt="">
+    <button id="getComment">获取评论</button>
+    <button id="add-comment">添加评论</button>
+    <br />
+    <br />
+    <div>
+        <textarea name="comment-content" id="comment-content" cols="30" rows="10"></textarea>
+    </div>
+    <h2>评论</h2>
     <ul id="comment"></ul>
 
     <script src="ajax.js"></script>
     <script>
-    
+        const oBtnGetComment = document.getElementById('getComment');
+        const oComment = document.getElementById('comment');
+        const aLink = document.getElementsByClassName('link');
+        const oBtnAddComment = document.getElementById('add-comment');
+        const oCommentContent = document.getElementById('comment-content');
+
+        const HOST = 'http://127.0.0.1:8888';
+        const api = {
+            add: HOST + '/comments/add',
+            list: HOST + '/comments/list'
+        };
+        let commentId = '';
+
+        oBtnGetComment.addEventListener('click', function () {
+            getComment();
+        }, false);
+
+        oBtnAddComment.addEventListener('click', function () {
+            if (!/\S/.test(oCommentContent.value)) {
+                alert('评论不能为空');
+            }
+            addComment();
+        }, false);
+
+        document.addEventListener('click', function (ev) {
+            const target = ev || event;
+            const targetId = target.srcElement.dataset.id;
+            commentId = targetId;
+            if (!commentId) return;
+            console.log(commentId);
+        }, false);
+
+        function addComment() {
+            ajax.post(api.add, {
+                    articalId: '5a19184cbf90927370f04b82',
+                    content: oCommentContent.value
+                })
+                .then((res) => {
+                    console.log(res);
+                    oCommentContent.value = '';
+                    alert('添加评论成功');
+                    getComment();
+                })
+                .catch(() => {
+                    console.log('失败');
+                });
+        }
+
+        function getComment() {
+            ajax.post(api.list, {
+                    articalId: '5a19184cbf90927370f04b82'
+                })
+                .then((res) => {
+                    console.log(res);
+                    if (!res.data) {
+                        alert('无数据');
+                        return;
+                    }
+                    let sCommentList = '';
+                    for (let i = 0; i < res.data.length; i++) {
+                        sCommentList +=
+                            `
+                            <li>
+                                <span>
+                                    ${res.data[i].comment_user_name} 的评论：
+                                    <a class="link" data-id="${res.data[i]._id}" href="javascript:;">
+                                        ${res.data[i].comment_content}
+                                    </a>
+                                </span>
+                            </li>
+                        `;
+                    }
+                    oComment.innerHTML = sCommentList;
+                })
+                .catch(() => {
+                    console.log('失败');
+                });
+        }
     </script>
 </body>
 

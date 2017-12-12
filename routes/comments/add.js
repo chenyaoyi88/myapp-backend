@@ -21,6 +21,11 @@ const addStatus = {
         code: '4003',
         msg: '操作失败，插入文章评论失败',
         data: null
+    },
+    commentError: {
+        code: '4004',
+        msg: '操作失败，评论内容类型错误',
+        data: null
     }
 };
 
@@ -32,10 +37,15 @@ router.post('/', function (req, res) {
     const articalId = req.body.articalId;
     const commentContent = req.body.content;
 
-    // 如果有必填项没有填，返回错误
+    // 如果评论内容有必填项没有填，返回错误
     if (!(articalId && commentContent)) {
         res.send(addStatus.someEmpty);
         return;
+    }
+
+    // 如果评论内容不是字符串，返回错误
+    if (typeof commentContent !== 'string') {
+        res.send(addStatus.commentError);
     }
 
     // step1: 根据 tokenDecoded 查到用户的 id 
@@ -43,9 +53,15 @@ router.post('/', function (req, res) {
     dao.findOne(User, { username })
     .then((data) => {
 
+        console.log('--------');
+        console.log(username);
+        console.log('--------');
+
         const commentData = {
+            artical: articalId,
             articalId: articalId,
             comment_user_id: data._id,
+            comment_user_name: username,
             comment_content: commentContent
         };
 

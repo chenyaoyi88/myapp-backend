@@ -29,6 +29,8 @@ const artical_edit = require('./routes/articals/edit');
 const file_uploadAvatar = require('./routes/files/upload_avatar');
 // 添加文章评论
 const comment_add = require('./routes/comments/add');
+// 文章评论列表
+const comment_list = require('./routes/comments/list');
 // 校验 token 
 const check = require('./routes/check');
 // 校验 token 中间件
@@ -103,6 +105,7 @@ app.use('/articals/detail', midCheckToken, artical_detail);
 app.use('/articals/edit', midCheckToken, artical_edit);
 app.use('/files/upload_avatar', midCheckToken, file_uploadAvatar);
 app.use('/comments/add', midCheckToken, comment_add);
+app.use('/comments/list', midCheckToken, comment_list);
 app.use('/check', midCheckToken, check);
 
 // catch 404 and forward to error handler
