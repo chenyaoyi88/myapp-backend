@@ -23,97 +23,36 @@ const listStatus = {
  * @description 添加评论
  */
 router.post('/', function (req, res) {
-    
-    const articalId = req.body.articalId;
+
+    const artical = req.body.artical;
     // 如果有必填项没有填，返回错误
-    if (!(articalId)) {
+    if (!(artical)) {
         res.send(listStatus.someEmpty);
         return;
     }
 
-    // 查找 ID 对应的文章
-    dao.findById(Artical, articalId)
-    .then((articals) => {
+    Artical.findById(artical, function (err, articals) {
         // 查找文档对应的评论
-        Comment.find({ articalId: articalId })
-        .populate('from', 'username')
+        Comment.find({
+            artical: artical
+        })
+        .populate([
+            {
+                path: 'from',
+                select: 'username'
+            },
+            {
+                path: 'to',
+                select: 'username'
+            }
+        ])
         .exec(function (err, comments) {
-            res.send({
+            res.send(status.success({
                 articals: articals,
                 comments: comments
-            });
-        });
-
-        // dao.find(Comment, { articalId: articalId })
-        // .populate('from', 'username')
-        // .exec(function (err, comments) {
-        //     res.send({
-        //         articals: articals,
-        //         comments: comments
-        //     });
-        // })
-
-        // .then((comments) => {
-        //     res.send({
-        //         articals: articals,
-        //         comments: comments
-        //     });
-        // })
-        // .catch((err) => {
-        //     res.send({
-        //         code: '4006',
-        //         msg: '找不到评论ID',
-        //         data: null
-        //     });
-        // });
-    })
-    .catch((err) => {
-        res.send({
-            code: '4005',
-            msg: '找不到文章ID',
-            data: null
+            }));
         });
     });
-
-    // dao.find(Comment, {
-    //     articalId
-    // })
-    // .then((data) => {
-    //     console.log('查找评论列表成功');
-    //     res.send(status.success(data));
-    // })
-    // .catch((err) => {
-    //     console.log('查找评论列表失败：' + err);
-    //     res.send(listStatus.findArticalIdError);
-    // });
-
-    // // step1: 根据 tokenDecoded 查到用户的 id 
-    // const username = req.tokenDecoded.username;
-    // dao.findOne(User, { username })
-    // .then((data) => {
-
-    //     const commentData = {
-    //         artical: articalId,
-    //         articalId: articalId,
-    //         comment_user_id: data._id,
-    //         comment_content: commentContent
-    //     };
-
-    //     // step2: 插入评论集合 
-    //     dao.insert(new Comment(commentData))
-    //     .then(() => {
-    //         res.send(status.success(null));
-    //     })
-    //     .catch((err) => {
-    //         console.log('插入文章评论失败：' + err);
-    //         res.send(addStatus.insertCommentError);
-    //     });
-
-    // })
-    // .catch((err) => {
-    //     console.log('查询用户ID失败：' + err);
-    //     res.send(addStatus.findUserDataError);
-    // });
 
 });
 

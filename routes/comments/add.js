@@ -34,65 +34,67 @@ const addStatus = {
  */
 router.post('/', function (req, res) {
 
-    const articalId = req.body.articalId;
-    const commentContent = req.body.content;
+    const artical = req.body.artical;
+    const content = req.body.content;
+    const commentTo = req.body.commentTo;
+
+    console.log('**********');
+    console.log(commentTo);
+    console.log('**********');
 
     // 如果评论内容有必填项没有填，返回错误
-    if (!(articalId && commentContent)) {
+    if (!(artical && content)) {
         res.send(addStatus.someEmpty);
         return;
     }
 
     // 如果评论内容不是字符串，返回错误
-    if (typeof commentContent !== 'string') {
+    if (typeof content !== 'string') {
         res.send(addStatus.commentError);
     }
 
-    let comment = new Comment({
-        articalId: articalId,
-        comment_content: commentContent
-    });
+    // step1: 根据 tokenDecoded 查到评论用户的 id 
+    const username = req.tokenDecoded.username;
 
-    comment.save(function (err, com) {
-        if (err) {
-            console.log(err);
-        }
-        res.send({
-            code: '0000',
-            msg: 'success',
-            data: com
+    dao.findOne(User, {
+            username
+        })
+        .then((data) => {
+
+            let commentData = {
+                // 文章 ID
+                artical: artical,
+                // 评论者 ID
+                from: data._id,
+                // 文章内容
+                content: content
+            };
+
+            if (commentTo) {
+                // 如果是评论给其他人，添加对方的 id
+                Object.assign(commentData, {
+                    to: commentTo
+                });
+                console.log('--------------');
+                console.log(commentData);
+                console.log('--------------');
+            }
+
+            // step2: 插入评论集合 
+            dao.insert(new Comment(commentData))
+                .then(() => {
+                    res.send(status.success(null));
+                })
+                .catch((err) => {
+                    console.log('插入文章评论失败：' + err);
+                    res.send(addStatus.insertCommentError);
+                });
+
+        })
+        .catch((err) => {
+            console.log('查询用户ID失败：' + err);
+            res.send(addStatus.findUserDataError);
         });
-    });
-
-    // // step1: 根据 tokenDecoded 查到用户的 id 
-    // const username = req.tokenDecoded.username;
-
-    // dao.findOne(User, { username })
-    // .then((data) => {
-
-    //     const commentData = {
-    //         artical: articalId,
-    //         articalId: articalId,
-    //         comment_user_id: data._id,
-    //         comment_user_name: username,
-    //         comment_content: commentContent
-    //     };
-
-    //     // step2: 插入评论集合 
-    //     dao.insert(new Comment(commentData))
-    //     .then(() => {
-    //         res.send(status.success(null));
-    //     })
-    //     .catch((err) => {
-    //         console.log('插入文章评论失败：' + err);
-    //         res.send(addStatus.insertCommentError);
-    //     });
-
-    // })
-    // .catch((err) => {
-    //     console.log('查询用户ID失败：' + err);
-    //     res.send(addStatus.findUserDataError);
-    // });
 
 });
 

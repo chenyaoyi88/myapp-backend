@@ -25,21 +25,23 @@
         const oComment = document.getElementById('comment');
         const aLink = document.getElementsByClassName('link');
         const oBtnAddComment = document.getElementById('add-comment');
-        const oCommentContent = document.getElementById('comment-content');
+        const oContent = document.getElementById('comment-content');
 
         const HOST = 'http://127.0.0.1:8888';
         const api = {
             add: HOST + '/comments/add',
             list: HOST + '/comments/list'
         };
-        let commentId = '';
+        let commentTo = '';
+
+        getComment();
 
         oBtnGetComment.addEventListener('click', function () {
             getComment();
         }, false);
 
         oBtnAddComment.addEventListener('click', function () {
-            if (!/\S/.test(oCommentContent.value)) {
+            if (!/\S/.test(oContent.value)) {
                 alert('评论不能为空');
             }
             addComment();
@@ -48,19 +50,21 @@
         document.addEventListener('click', function (ev) {
             const target = ev || event;
             const targetId = target.srcElement.dataset.id;
-            commentId = targetId;
-            if (!commentId) return;
-            console.log(commentId);
+            if (targetId) {
+                commentTo = targetId;
+                console.log(targetId);
+            }
         }, false);
 
         function addComment() {
             ajax.post(api.add, {
-                    articalId: '5a30a4dfcd9b851154d4b77c',
-                    content: oCommentContent.value
+                    artical: '5a30a4dfcd9b851154d4b77c',
+                    content: oContent.value,
+                    commentTo: commentTo
                 })
                 .then((res) => {
                     console.log(res);
-                    oCommentContent.value = '';
+                    oContent.value = '';
                     alert('添加评论成功');
                     getComment();
                 })
@@ -71,24 +75,35 @@
 
         function getComment() {
             ajax.post(api.list, {
-                    articalId: '5a30a4dfcd9b851154d4b77c'
+                    artical: '5a30a4dfcd9b851154d4b77c'
                 })
                 .then((res) => {
                     console.log(res);
-                    if (!res.data) {
-                        alert('无数据');
+                    if (!res.data || !res.data.comments.length) {
+                        console.log('无数据');
                         return;
                     }
                     let sCommentList = '';
-                    for (let i = 0; i < res.data.length; i++) {
+                    const aComment = res.data.comments;
+                    for (let i = 0; i < aComment.length; i++) {
+                        let commentTo = aComment[i].to;
+                        let sCommentTo = '';
+                        if (commentTo) {
+                            sCommentTo  = `
+                                <a data-id="${aComment[i].from._id}" href="javascript:;">${aComment[i].from.username}</a> 给
+                                <a data-id="${aComment[i].to._id}" href="javascript:;">${aComment[i].to.username}</a> 的评论
+                            `;
+                        } else {
+                            sCommentTo = `
+                                来自 <a data-id="${aComment[i].from._id}" href="javascript:;">${aComment[i].from.username}</a> 的评论：
+                            `;
+                        }
                         sCommentList +=
                             `
                             <li>
                                 <span>
-                                    ${res.data[i].comment_user_name} 的评论：
-                                    <a class="link" data-id="${res.data[i]._id}" href="javascript:;">
-                                        ${res.data[i].comment_content}
-                                    </a>
+                                    ${sCommentTo}
+                                    <span>${aComment[i].content}</span>
                                 </span>
                             </li>
                         `;

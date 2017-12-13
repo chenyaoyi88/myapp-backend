@@ -3,35 +3,24 @@ const Schema = mongoose.Schema;
 const ObjectId =  Schema.Types.ObjectId;
 
 const CommentSchema = new Schema({
+    // 文章 ID
     artical: {
         type: ObjectId, 
-        ref: 'Artical'
+        ref: 'Artical',
+        require: true
     },
+    // 谁发表评论的
     from: {
         type: ObjectId, 
         ref: 'User'
     },
+    // 评论给谁
     to: {
         type: ObjectId, 
         ref: 'User'
     },
-    // 文章 ID
-    articalId: {
-        type: String,
-        require: true
-    },
-    // // 用户 ID
-    // comment_user_id: {
-    //     type: String,
-    //     require: true
-    // },
-    // // 用户名
-    // comment_user_name: {
-    //     type: String,
-    //     require: true
-    // },
     // 评论内容
-    comment_content: {
+    content: {
         type: String,
         require: true,
         default: ''
