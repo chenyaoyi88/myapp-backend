@@ -40,14 +40,13 @@ router.get('/', function (req, res) {
             res.send(status.error());
         } else {
             // console.log('查找用户文章列表成功：' + data);
-            console.log('查找用户文章列表成功：');
             Artical.count(params, function (getCountErr, count) {
                 if (getCountErr) {
                     console.log('查询分页总数失败：' + getCountErr);
                     res.send(listStatus.getCountErr);
                 } else {
-                    console.log('查询分页总数成功：' + count);
-                    res.send(listStatus.success(data, count, page));
+                    // console.log('查询分页总数成功：' + count);
+                    res.send(status.pagination(data, count, page));
                 }
             });
         }

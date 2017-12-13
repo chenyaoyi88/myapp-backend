@@ -63,11 +63,11 @@ const fnToken = {
     .then((data) => {
       // data 没有数据
       if (!data) {
-        console.log('查找成功，进入失败回调，token 相关数据为：' + data);
+        // console.log('查找成功，进入失败回调，token 相关数据为：' + data);
         fnFail && fnFail(data);
       } else {
         // data 有数据
-        console.log('查找成功，进入成功回调，token 相关数据为：' + data);
+        // console.log('查找成功，进入成功回调，token 相关数据为：' + data);
         fnSuccess && fnSuccess(data);
       }
     })
@@ -94,7 +94,7 @@ const fnToken = {
     } else {
       this.find(res, { token: tokenString }, () => {
         // 有数据，去验证是否失效
-        console.log('验证 token 是否过期');
+        // console.log('验证 token 是否过期');
         jwt.verify(tokenString, config.secret, function (err, decoded) {
           if (err) {
             // 时间失效、伪造 => 超时（需要重新登录）
@@ -102,7 +102,7 @@ const fnToken = {
             res.send(tokenStatus.timeout);
           } else {
             // 校验通过，返回 decoded 
-            console.log('token 可以正常使用');
+            // console.log('token 可以正常使用');
             cb(decoded);
           }
         });
@@ -126,7 +126,7 @@ const fnToken = {
           username: decoded.username
         })
         .then((data) => {
-          console.log('清除 token 成功：' + data);
+          // console.log('清除 token 成功：' + data);
           res.send(tokenStatus.success);
         })
         .catch((err) => {

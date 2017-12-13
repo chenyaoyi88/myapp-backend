@@ -16,7 +16,7 @@ const dao = {
       if (err) {
         console.log("保存数据失败:" + err);
       } else {
-        console.log("保存数据成功:" + res);
+        // console.log("保存数据成功:" + res);
       }
     });
   },
@@ -25,7 +25,7 @@ const dao = {
       if (err) {
         console.log("删除数据失败:" + err);
       } else {
-        console.log("删除数据成功:" + res);
+        // console.log("删除数据成功:" + res);
       }
     })
   },
@@ -34,7 +34,7 @@ const dao = {
       if (err) {
         console.log("根据ID删除数据失败:" + err);
       } else {
-        console.log("根据ID删除数据成功:" + res);
+        // console.log("根据ID删除数据成功:" + res);
       }
     });
   },
@@ -43,7 +43,7 @@ const dao = {
       if (err) {
         console.log("根据条件删除数据失败:" + err);
       } else {
-        console.log("根据条件删除数据成功:" + res);
+        // console.log("根据条件删除数据成功:" + res);
       }
     });
   },
@@ -52,9 +52,7 @@ const dao = {
       if (err) {
         console.log("查找数据失败:" + err);
       } else {
-        // console.log('conditions：' + JSON.stringify(conditions));
-        console.log("查找数据成功:" + res);
-        // objectIsEmpty(res) ? null : res;
+        // console.log("查找数据成功:" + res);
       }
     });
 
@@ -68,7 +66,7 @@ const dao = {
       if (err) {
         console.log("根据查找一条数据失败:" + err);
       } else {
-        console.log("根据查找一条数据成功:" + res);
+        // console.log("根据查找一条数据成功:" + res);
       }
     });
   },
@@ -77,7 +75,7 @@ const dao = {
       if (err) {
         console.log("根据ID查找数据失败:" + err);
       } else {
-        console.log("根据ID查找数据成功:" + res);
+        // console.log("根据ID查找数据成功:" + res);
       }
     });
   },
@@ -86,7 +84,7 @@ const dao = {
       if (err) {
         console.log("根据条件查找数据记录个数失败:" + err);
       } else {
-        console.log("根据条件查找数据记录个数成功:" + res);
+        // console.log("根据条件查找数据记录个数成功:" + res);
       }
     });
   },
@@ -97,7 +95,7 @@ const dao = {
           console.log("更新数据失败:" + err);
           reject(err);
         } else {
-          console.log("更新数据成功:" + JSON.stringify(res));
+          // console.log("更新数据成功:" + JSON.stringify(res));
           resolve(res);
         }
       });
@@ -112,37 +110,14 @@ const dao = {
           console.log("根据ID更新数据失败:" + err);
           reject(err);
         } else {
-          console.log("根据ID更新数据成功:" + res);
+          // console.log("根据ID更新数据成功:" + res);
           resolve(res);
         }
       });
     });
   },
   pagination: function (Model, params, page) {
-
     return Model.find(params).limit(Number(page.pageSize)).skip(Number(page.pageNo));
-
-    // Model.find(params).limit(Number(page.pageSize)).skip(Number(page.pageNo)).exec((err, data) => {
-    //     if (err) {
-    //         console.log('查找用户文章列表失败：' + err);
-    //         res.send(status.error());
-    //     } else {
-    //         console.log('查找用户文章列表成功：');
-    //         Model.count(params, function (err, count) {
-    //             res.send({
-    //                 code: '0000',
-    //                 msg: '操作成功',
-    //                 data: {
-    //                     pageNo: page.pageNo + 1,
-    //                     pageSize: page.pageSize,
-    //                     total: count,
-    //                     data: data
-    //                 }
-    //             });
-    //         });
-    //     }
-    // });
-
   }
 };
 

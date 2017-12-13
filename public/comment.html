@@ -28,6 +28,7 @@
         const oContent = document.getElementById('comment-content');
 
         const HOST = 'http://127.0.0.1:8888';
+        const artical = '5a19184cbf90927370f04b82';
         const api = {
             add: HOST + '/comments/add',
             list: HOST + '/comments/list'
@@ -58,15 +59,19 @@
 
         function addComment() {
             ajax.post(api.add, {
-                    artical: '5a30a4dfcd9b851154d4b77c',
+                    artical: artical,
                     content: oContent.value,
                     commentTo: commentTo
                 })
                 .then((res) => {
                     console.log(res);
-                    oContent.value = '';
-                    alert('添加评论成功');
-                    getComment();
+                    if (res.code === '0000') {
+                        alert('添加评论成功');
+                        oContent.value = '';
+                        getComment();
+                    } else {
+                        alert(res.msg);
+                    }
                 })
                 .catch(() => {
                     console.log('失败');
@@ -74,27 +79,31 @@
         }
 
         function getComment() {
-            ajax.post(api.list, {
-                    artical: '5a30a4dfcd9b851154d4b77c'
+            ajax.get(api.list, {
+                    artical: artical,
+                    pageSize: 10,
+                    pageNo: 1
                 })
                 .then((res) => {
                     console.log(res);
-                    if (!res.data || !res.data.comments.length) {
+                    if (!res.data || !res.data.data.length) {
                         console.log('无数据');
                         return;
                     }
                     let sCommentList = '';
-                    const aComment = res.data.comments;
+                    const aComment = res.data.data;
                     for (let i = 0; i < aComment.length; i++) {
                         let commentTo = aComment[i].to;
                         let sCommentTo = '';
                         if (commentTo) {
-                            sCommentTo  = `
+                            sCommentTo =
+                                `
                                 <a data-id="${aComment[i].from._id}" href="javascript:;">${aComment[i].from.username}</a> 给
                                 <a data-id="${aComment[i].to._id}" href="javascript:;">${aComment[i].to.username}</a> 的评论
                             `;
                         } else {
-                            sCommentTo = `
+                            sCommentTo =
+                                `
                                 来自 <a data-id="${aComment[i].from._id}" href="javascript:;">${aComment[i].from.username}</a> 的评论：
                             `;
                         }

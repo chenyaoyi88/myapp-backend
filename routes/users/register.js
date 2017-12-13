@@ -38,7 +38,7 @@ router.post('/', function (req, res) {
     dao.insert(new User(req.body))
       .then((resMsg) => {
         // 数据添加成功
-        console.log('注册用户成功: ' + resMsg);
+        // console.log('注册用户成功: ' + resMsg);
         res.send(status.success(null));
       })
       .catch((err) => {

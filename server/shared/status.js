@@ -54,7 +54,19 @@ const status = {
       msg: msg,
       data: null
     }
-  } 
+  },
+  pagination: function (data, count, page) {
+    return {
+        code: defaultCode.success,
+        msg: '操作成功',
+        data: {
+            data: data,
+            total: count,
+            pageNo: page.pageNo / page.pageSize + 1,
+            pageSize: page.pageSize
+        }
+    }
+},
 };
 
 module.exports = status;

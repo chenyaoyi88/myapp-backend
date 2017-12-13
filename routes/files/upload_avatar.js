@@ -61,7 +61,7 @@ router.post('/', function (req, res) {
                 console.log('文件重命名失败：' + err);
                 res.send(uploadStatus.renameError);
             } else {
-                console.log('文件重命名成功');
+                // console.log('文件重命名成功');
                 res.send(uploadStatus.success({
                     fileUrl: showUrl
                 }));
