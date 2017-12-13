@@ -55,7 +55,7 @@
 
         function addComment() {
             ajax.post(api.add, {
-                    articalId: '5a19184cbf90927370f04b82',
+                    articalId: '5a30a4dfcd9b851154d4b77c',
                     content: oCommentContent.value
                 })
                 .then((res) => {
@@ -71,7 +71,7 @@
 
         function getComment() {
             ajax.post(api.list, {
-                    articalId: '5a19184cbf90927370f04b82'
+                    articalId: '5a30a4dfcd9b851154d4b77c'
                 })
                 .then((res) => {
                     console.log(res);
