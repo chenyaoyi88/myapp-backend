@@ -4,29 +4,32 @@ const ObjectId =  Schema.Types.ObjectId;
 
 const CommentSchema = new Schema({
     artical: {
-        type: ObjectId, ref: 'Artical'
+        type: ObjectId, 
+        ref: 'Artical'
     },
     from: {
-        type: ObjectId, ref: 'User'
+        type: ObjectId, 
+        ref: 'User'
     },
     to: {
-        type: ObjectId, ref: 'User'
+        type: ObjectId, 
+        ref: 'User'
     },
     // 文章 ID
     articalId: {
         type: String,
         require: true
     },
-    // 用户 ID
-    comment_user_id: {
-        type: String,
-        require: true
-    },
-    // 用户名
-    comment_user_name: {
-        type: String,
-        require: true
-    },
+    // // 用户 ID
+    // comment_user_id: {
+    //     type: String,
+    //     require: true
+    // },
+    // // 用户名
+    // comment_user_name: {
+    //     type: String,
+    //     require: true
+    // },
     // 评论内容
     comment_content: {
         type: String,

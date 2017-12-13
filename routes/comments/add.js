@@ -48,38 +48,51 @@ router.post('/', function (req, res) {
         res.send(addStatus.commentError);
     }
 
-    // step1: 根据 tokenDecoded 查到用户的 id 
-    const username = req.tokenDecoded.username;
-    dao.findOne(User, { username })
-    .then((data) => {
-
-        console.log('--------');
-        console.log(username);
-        console.log('--------');
-
-        const commentData = {
-            artical: articalId,
-            articalId: articalId,
-            comment_user_id: data._id,
-            comment_user_name: username,
-            comment_content: commentContent
-        };
-
-        // step2: 插入评论集合 
-        dao.insert(new Comment(commentData))
-        .then(() => {
-            res.send(status.success(null));
-        })
-        .catch((err) => {
-            console.log('插入文章评论失败：' + err);
-            res.send(addStatus.insertCommentError);
-        });
-
-    })
-    .catch((err) => {
-        console.log('查询用户ID失败：' + err);
-        res.send(addStatus.findUserDataError);
+    let comment = new Comment({
+        articalId: articalId,
+        comment_content: commentContent
     });
+
+    comment.save(function (err, com) {
+        if (err) {
+            console.log(err);
+        }
+        res.send({
+            code: '0000',
+            msg: 'success',
+            data: com
+        });
+    });
+
+    // // step1: 根据 tokenDecoded 查到用户的 id 
+    // const username = req.tokenDecoded.username;
+
+    // dao.findOne(User, { username })
+    // .then((data) => {
+
+    //     const commentData = {
+    //         artical: articalId,
+    //         articalId: articalId,
+    //         comment_user_id: data._id,
+    //         comment_user_name: username,
+    //         comment_content: commentContent
+    //     };
+
+    //     // step2: 插入评论集合 
+    //     dao.insert(new Comment(commentData))
+    //     .then(() => {
+    //         res.send(status.success(null));
+    //     })
+    //     .catch((err) => {
+    //         console.log('插入文章评论失败：' + err);
+    //         res.send(addStatus.insertCommentError);
+    //     });
+
+    // })
+    // .catch((err) => {
+    //     console.log('查询用户ID失败：' + err);
+    //     res.send(addStatus.findUserDataError);
+    // });
 
 });
 

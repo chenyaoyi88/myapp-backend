@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Comment = require('../../server/models/comment');
-// const User = require('../../server/models/user');
+const Artical = require('../../server/models/artical');
 const dao = require('../../server/dao');
 const status = require('../../server/shared/status');
 
@@ -31,17 +31,61 @@ router.post('/', function (req, res) {
         return;
     }
 
-    dao.find(Comment, {
-        articalId
-    })
-    .then((data) => {
-        console.log('查找评论列表成功');
-        res.send(status.success(data));
+    // 查找 ID 对应的文章
+    dao.findById(Artical, articalId)
+    .then((articals) => {
+        // 查找文档对应的评论
+        Comment.find({ articalId: articalId })
+        .populate('from', 'username')
+        .exec(function (err, comments) {
+            res.send({
+                articals: articals,
+                comments: comments
+            });
+        });
+
+        // dao.find(Comment, { articalId: articalId })
+        // .populate('from', 'username')
+        // .exec(function (err, comments) {
+        //     res.send({
+        //         articals: articals,
+        //         comments: comments
+        //     });
+        // })
+
+        // .then((comments) => {
+        //     res.send({
+        //         articals: articals,
+        //         comments: comments
+        //     });
+        // })
+        // .catch((err) => {
+        //     res.send({
+        //         code: '4006',
+        //         msg: '找不到评论ID',
+        //         data: null
+        //     });
+        // });
     })
     .catch((err) => {
-        console.log('查找评论列表失败：' + err);
-        res.send(listStatus.findArticalIdError);
+        res.send({
+            code: '4005',
+            msg: '找不到文章ID',
+            data: null
+        });
     });
+
+    // dao.find(Comment, {
+    //     articalId
+    // })
+    // .then((data) => {
+    //     console.log('查找评论列表成功');
+    //     res.send(status.success(data));
+    // })
+    // .catch((err) => {
+    //     console.log('查找评论列表失败：' + err);
+    //     res.send(listStatus.findArticalIdError);
+    // });
 
     // // step1: 根据 tokenDecoded 查到用户的 id 
     // const username = req.tokenDecoded.username;
