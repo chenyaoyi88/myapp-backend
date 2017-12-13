@@ -5,9 +5,9 @@
 var COS = require('cos-nodejs-sdk-v5');
 // 创建实例
 var cos = new COS({
-    AppId: '1252753508',
-    SecretId: 'AKIDlQFj2AbsSwBJH47ASYTEpESWP6c5lSkp',
-    SecretKey: '61kQwHLN5cx9E6qQp3C4uQlvtfJm4HIC',
+    AppId: 'xxxx',
+    SecretId: 'xxxxx',
+    SecretKey: 'xxxxx',
 });
 // 分片上传
 cos.sliceUploadFile({
