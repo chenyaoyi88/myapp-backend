@@ -20,8 +20,9 @@ const artical_edit = require('./routes/artical/edit');
 const file_uploadAvatar = require('./routes/file/upload_avatar');
 const comment_add = require('./routes/comment/add');
 const comment_list = require('./routes/comment/list');
-const check = require('./routes/check');
 const midCheckToken = require('./routes/check_token');
+const check = require('./routes/check');
+const captcha = require('./routes/captcha');
 
 const app = express();
 
@@ -106,6 +107,8 @@ app.use('/comment/add', midCheckToken, comment_add);
 app.use('/comment/list', midCheckToken, comment_list);
 // 检查 token 
 app.use('/check', midCheckToken, check);
+// 验证码
+app.use('/captcha', captcha);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

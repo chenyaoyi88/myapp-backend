@@ -12,6 +12,7 @@ const tokenCheckUrl = url + '/check';
 const articalUpload = url + '/artical/add';
 const articalDownload = url + '/artical/list';
 const articalEdit = url + '/artical/edit';
+const captcha = url + '/captcha';
 
 oBtnSignUp.addEventListener('click', function () {
     if (!(/\S/.test(sUserName.value)) || !(/\S/.test(sPassword.value))) {
@@ -93,10 +94,10 @@ var artical = {
 };
 var E = window.wangEditor;
 var editor = new E('#editor');
-editor.create();
+editor && editor.create();
 var oBtnSetText = document.getElementById('setText');
 
-oBtnUploadArtical.addEventListener('click', function () {
+oBtnUploadArtical && oBtnUploadArtical.addEventListener('click', function () {
     for (var i = 0; i < radios.length; i++) {
         if (radios[i].checked == true) {
             artical.type = radios[i].value;
@@ -118,7 +119,7 @@ oBtnUploadArtical.addEventListener('click', function () {
         });
 });
 
-oBtnUploadReset.addEventListener('click', function () {
+oBtnUploadReset && oBtnUploadReset.addEventListener('click', function () {
 
     oArticalTitle.value = '';
     oArticalCover.value = '';
@@ -130,7 +131,7 @@ oBtnUploadReset.addEventListener('click', function () {
     }
 });
 
-oBtnSetText.addEventListener('click', function () {
+oBtnSetText && oBtnSetText.addEventListener('click', function () {
     ajax.get(articalDownload)
         .then((res) => {
             editor.txt.html(res.data[0].content);
@@ -138,4 +139,10 @@ oBtnSetText.addEventListener('click', function () {
         .catch((err) => {
             alert('下载文章失败');
         });
+});
+
+
+ajax.get(captcha).then((res) => {
+    console.log(res);
+    document.getElementById('captcha').innerHTML = res.data.data;
 });

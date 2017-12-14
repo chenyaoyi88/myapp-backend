@@ -19,6 +19,7 @@
 			<label for="username">帐号：</label>
 			<input type="text" id="username">
 		</div>
+		<p>&nbsp;</p>
 		<div>
 			<label for="paassword">密码：</label>
 			<input type="text" id="paassword">
@@ -33,6 +34,7 @@
 		</div>
 
 		<br>
+
 		<div>
 			<div>
 				<label>
@@ -65,39 +67,12 @@
 				<button id="articalUpload">文章上传</button>
 				<button id="articalReset">清空</button>
 			</div>
+			<button id="setText">设置文本</button>
 		</div>
 
-		<button id="setText">设置文本</button>
-
-		<article id="infoWin">
-			<p class="driver_info">
-				<span class="car_type"></span>
-				<span class="plate "></span>
-				<span class="driver_name"></span>
-				<span class="driver_mobile"></span>
-				<span class="car_state"></span>
-			</p>
-			<section class="details">
-				<hr>
-				<p>
-					<span class="ordered_time">2017-11-24 14:41:57</span>
-					<span class="order_id">LO201711245021</span>
-				</p>
-				<p class="sender_addr"></p>
-				<p>
-					<span class="sender_name"></span>
-					<span class="sender_tel"></span>
-				</p>
-				<p class="receiver_addr"></p>
-				<p>
-					<span class="receiver_name"></span>
-					<span class="receiver_tel"></span>
-				</p>
-			</section>
-		</article>
-
-
 		<input type="file" name="fulAvatar" id="file_upload" value="" class="form-control" placeholder="图片地址" onchange="uploadByForm();">
+		
+		<div id="captcha"></div>
 
 		<img id="img" src="" alt="">
 
@@ -115,7 +90,7 @@
 			var fileObj = document.getElementById("file_upload").files[0];
 			formData.append('fulAvatar', fileObj);
 
-			var url = 'http://127.0.0.1:8888/files/upload_avatar';
+			var url = 'http://127.0.0.1:8888/file/upload_avatar';
 			$.ajax({
 				url: url,
 				type: 'POST',
