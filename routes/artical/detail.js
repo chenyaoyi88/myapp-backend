@@ -28,7 +28,7 @@ router.post('/', function (req, res) {
 
     dao.findById(Artical, articalId)
     .then((data) => {
-        console.log('获取文章详情成功：' + data);
+        // console.log('获取文章详情成功：' + data);
         res.send(status.success(data));
     })
     .catch((err) => {

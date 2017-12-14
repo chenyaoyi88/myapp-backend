@@ -111,8 +111,6 @@ router.post('/', function (req, res) {
             res.send(addStatus.findArticalDataError);
         });
 
-
-
 });
 
 module.exports = router;

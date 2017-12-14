@@ -6,12 +6,12 @@ var oBtnTokenCheck = document.getElementById('tokencheck');
 
 const url = 'http://127.0.0.1:8888';
 
-const registerUrl = url + '/users/register';
-const loginUrl = url + '/users/login';
+const registerUrl = url + '/user/register';
+const loginUrl = url + '/user/login';
 const tokenCheckUrl = url + '/check';
-const articalUpload = url + '/articals/add';
-const articalDownload = url + '/articals/list';
-const articalEdit = url + '/articals/edit';
+const articalUpload = url + '/artical/add';
+const articalDownload = url + '/artical/list';
+const articalEdit = url + '/artical/edit';
 
 oBtnSignUp.addEventListener('click', function () {
     if (!(/\S/.test(sUserName.value)) || !(/\S/.test(sPassword.value))) {

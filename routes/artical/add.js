@@ -34,8 +34,8 @@ router.post('/', function (req, res) {
     });
 
     dao.insert(new Artical(articalData))
-    .then((resMsg) => {
-        console.log('添加文章成功: ' + resMsg);
+    .then(() => {
+        // console.log('添加文章成功: ' + resMsg);
         res.send(status.success(null));
     })
     .catch((err) => {

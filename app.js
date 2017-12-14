@@ -9,31 +9,18 @@ const mongoose = require('mongoose');
 const config = require('./config');
 
 const index = require('./routes/index');
-// 用户注册、登录、退出 
-const register = require('./routes/users/register');
-// 用户登录
-const login = require('./routes/users/login');
-// 用户退出
-const logout = require('./routes/users/logout');
-// 添加添加
-const artical_add = require('./routes/articals/add');
-// 查询文章列表
-const artical_list = require('./routes/articals/list');
-// 删除指定文章
-const artical_delete = require('./routes/articals/delete');
-// 获取文章想起
-const artical_detail = require('./routes/articals/detail');
-// 编辑/修改文章
-const artical_edit = require('./routes/articals/edit');
-// 上传头像
-const file_uploadAvatar = require('./routes/files/upload_avatar');
-// 添加文章评论
-const comment_add = require('./routes/comments/add');
-// 文章评论列表
-const comment_list = require('./routes/comments/list');
-// 校验 token 
+const register = require('./routes/user/register');
+const login = require('./routes/user/login');
+const logout = require('./routes/user/logout');
+const artical_add = require('./routes/artical/add');
+const artical_list = require('./routes/artical/list');
+const artical_delete = require('./routes/artical/delete');
+const artical_detail = require('./routes/artical/detail');
+const artical_edit = require('./routes/artical/edit');
+const file_uploadAvatar = require('./routes/file/upload_avatar');
+const comment_add = require('./routes/comment/add');
+const comment_list = require('./routes/comment/list');
 const check = require('./routes/check');
-// 校验 token 中间件
 const midCheckToken = require('./routes/check_token');
 
 const app = express();
@@ -95,17 +82,29 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users/register', register);
-app.use('/users/login', login);
-app.use('/users/logout', logout);
-app.use('/articals/add', midCheckToken, artical_add);
-app.use('/articals/list', midCheckToken, artical_list);
-app.use('/articals/delete', midCheckToken, artical_delete);
-app.use('/articals/detail', midCheckToken, artical_detail);
-app.use('/articals/edit', midCheckToken, artical_edit);
-app.use('/files/upload_avatar', midCheckToken, file_uploadAvatar);
-app.use('/comments/add', midCheckToken, comment_add);
-app.use('/comments/list', midCheckToken, comment_list);
+// 用户注册
+app.use('/user/register', register);
+// 用户登录
+app.use('/user/login', login);
+// 用户退出
+app.use('/user/logout', logout);
+// 添加文章
+app.use('/artical/add', midCheckToken, artical_add);
+// 获取文章列表
+app.use('/artical/list', midCheckToken, artical_list);
+// 文章删除
+app.use('/artical/delete', midCheckToken, artical_delete);
+// 获取文章详情
+app.use('/artical/detail', midCheckToken, artical_detail);
+// 编辑/更新文章
+app.use('/artical/edit', midCheckToken, artical_edit);
+// 上传头像
+app.use('/file/upload_avatar', midCheckToken, file_uploadAvatar);
+// 添加评论
+app.use('/comment/add', midCheckToken, comment_add);
+// 获取文章的评论列表
+app.use('/comment/list', midCheckToken, comment_list);
+// 检查 token 
 app.use('/check', midCheckToken, check);
 
 // catch 404 and forward to error handler

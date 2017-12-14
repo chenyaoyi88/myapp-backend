@@ -7,6 +7,10 @@ const validate = {
       }
     }
     return false;
+  },
+  // 检测手机号码
+  checkPhone: function (phone) {
+    return /^1[3-9][0-9]{9}$/g.test(phone) ? true : false;
   }
 };
 
