@@ -1,3 +1,4 @@
+
 const express = require('express');
 const path = require('path');
 // const favicon = require('serve-favicon');
@@ -6,6 +7,9 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
 const config = require('./config');
 
 const index = require('./routes/index');
@@ -20,9 +24,15 @@ const artical_edit = require('./routes/artical/edit');
 const file_uploadAvatar = require('./routes/file/upload_avatar');
 const comment_add = require('./routes/comment/add');
 const comment_list = require('./routes/comment/list');
-const midCheckToken = require('./routes/check_token');
-const check = require('./routes/check');
-const captcha = require('./routes/captcha');
+const midCheckToken = require('./routes/token/check_token');
+const check = require('./routes/token/check');
+const captcha = require('./routes/captcha/captcha');
+const captchaCheck = require('./routes/captcha/check_captcha');
+
+const interfaceType = {
+  admin: 'admin',
+  app: 'app'
+};
 
 const app = express();
 
@@ -82,6 +92,23 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  name: config.name,
+  //与cookieParser中的一致
+  secret: config.secret,
+  // 添加 resave 选项 
+  resave: true,
+  // 是否保存未初始化的会话 
+  saveUninitialized: false,
+  cookie: {
+    maxAge: config.expireTimeCaptcha
+  },
+  store: new MongoStore({
+    collection: 'captchas',
+    mongooseConnection: mongoose.connection 
+  })
+}));
+
 app.use('/', index);
 // 用户注册
 app.use('/user/register', register);
@@ -109,6 +136,8 @@ app.use('/comment/list', midCheckToken, comment_list);
 app.use('/check', midCheckToken, check);
 // 验证码
 app.use('/captcha', captcha);
+// 验证码检测
+app.use('/captcha/check', captchaCheck);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

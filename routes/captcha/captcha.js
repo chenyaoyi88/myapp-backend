@@ -1,21 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const status = require('../server/shared/status');
+const status = require('../../server/shared/status');
 const svgCaptcha = require('svg-captcha');
-
-function getClientIp(req) {
-    return req.headers['x-forwarded-for'] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        req.connection.socket.remoteAddress;
-};
+const colors = require('colors');
 
 router.get('/', function (req, res) {
     const captcha = svgCaptcha.create();
-    // console.log(req);
-    // req.session.captcha = captcha.text;
-    // res.send(status.success(captcha.data));
-    res.send(status.success(req.headers));
+    req.session.captcha = captcha.text;
+    res.send(status.success(captcha.data));
 });
 
 /**

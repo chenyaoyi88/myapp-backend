@@ -13,6 +13,7 @@ const articalUpload = url + '/artical/add';
 const articalDownload = url + '/artical/list';
 const articalEdit = url + '/artical/edit';
 const captcha = url + '/captcha';
+const captchaCheck = url + '/captcha/check';
 
 oBtnSignUp.addEventListener('click', function () {
     if (!(/\S/.test(sUserName.value)) || !(/\S/.test(sPassword.value))) {
@@ -144,5 +145,24 @@ oBtnSetText && oBtnSetText.addEventListener('click', function () {
 
 ajax.get(captcha).then((res) => {
     console.log(res);
-    document.getElementById('captcha').innerHTML = res.data.data;
+    document.getElementById('captcha').innerHTML = res.data;
 });
+
+const oCaptchaInput = document.getElementById('captcha_input');
+const oCaptchaBtn = document.getElementById('captcha_btn');
+
+oCaptchaBtn.addEventListener('click', function () {
+    if (!/\S/.test(oCaptchaInput.value)) {
+        alert('请输入验证码');
+        return;
+    }
+    ajax.get(captchaCheck, {
+        captcha: oCaptchaInput.value
+    })
+    .then((data) => {
+        console.log(data);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+}, false);

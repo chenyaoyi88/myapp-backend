@@ -1,4 +1,4 @@
-const fnToken = require('../server/token');
+const fnToken = require('../../server/token');
 
 module.exports = function (req, res, next) {
     const token = req.headers.token;
