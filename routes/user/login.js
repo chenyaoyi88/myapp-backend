@@ -71,6 +71,7 @@ router.post('/', function (req, res) {
 
           // 返回 token 给前端
           res.send(status.success({
+            username: username,
             token: token
           }));
 

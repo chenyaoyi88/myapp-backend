@@ -5,7 +5,7 @@ const TokenSave = require('../models/token');
 
 const tokenStatus = {
   success: {
-    code: '8000',
+    code: '0000',
     msg: '操作成功',
     data: null
   },
